@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yuliana Gabriela 💖</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Allura&family=Playfair+Display:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+*{margin:0;padding:0;box-sizing:border-box;}
+
+body{
+overflow:hidden;
+background:black;
+color:white;
+font-family:'Playfair Display', serif;
+}
+
+/* VIDEO */
+video{
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+object-fit:cover;
+z-index:-3;
+filter:blur(15px) brightness(25%);
+transition:2s;
+}
+
+/* GALAXIA */
+canvas{
+position:fixed;
+top:0;
+left:0;
+z-index:-2;
+pointer-events:none;  /* 👈 ESTO SOLUCIONA EL PROBLEMA */
+}
+
+/* CONTENIDO */
+.contenido{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+text-align:center;
+width:90%;
+max-width:500px;
+z-index:5; /* 👈 más alto */
+}
+
+
+/* TITULO */
+h1{
+font-family:'Allura',cursive;
+font-size:3.5em;
+text-shadow:0 0 30px white;
+margin-bottom:20px;
+}
+
+/* BOTON */
+button{
+padding:15px 35px;
+border:none;
+border-radius:50px;
+background:linear-gradient(45deg,#ff4d6d,#ff99ac);
+color:white;
+font-size:16px;
+cursor:pointer;
+box-shadow:0 0 30px rgba(255,105,135,0.9);
+transition:0.4s;
+}
+
+button:hover{transform:scale(1.1);}
+
+/* FRASES */
+.frase{
+position:fixed;
+bottom:60px;
+width:100%;
+text-align:center;
+font-size:22px;
+opacity:0;
+transition:1.5s;
+padding:0 20px;
+text-shadow:0 0 20px white;
+}
+
+/* CARTA */
+.carta{
+display:none;
+margin-top:30px;
+padding:25px;
+background:rgba(255,255,255,0.07);
+border:1px solid rgba(255,255,255,0.2);
+border-radius:20px;
+backdrop-filter:blur(20px);
+animation:fadeIn 2s forwards;
+}
+
+@keyframes fadeIn{
+from{opacity:0;transform:translateY(20px);}
+to{opacity:1;transform:translateY(0);}
+}
+
+/* MENSAJE FINAL */
+.final{
+position:fixed;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+font-family:'Allura',cursive;
+font-size:4em;
+text-align:center;
+opacity:0;
+z-index:3;
+text-shadow:0 0 40px #ff99ac;
+transition:2s;
+}
+
+@media(max-width:600px){
+h1{font-size:2.5em;}
+.frase{font-size:16px;}
+.final{font-size:2.5em;}
+}
+</style>
+</head>
+
+<body>
+
+<video id="video" loop>
+<source src="/video/video.mp4" type="video/mp4">
+</video>
+
+<canvas id="galaxia"></canvas>
+
+<div class="contenido">
+<h1>Yuliana Gabriela ✨</h1>
+<button onclick="iniciar()">Iniciar nuestro universo 💫</button>
+
+<div class="carta" id="mensaje">
+Mi hermosa Yuliana... 💖<br><br>
+Si el destino me deja elegir una y mil veces…<br>
+te elegiría siempre a ti.<br><br>
+Eres mi luz, mi paz y mi infinito.
+</div>
+</div>
+
+<div class="frase" id="frase"></div>
+<div class="final" id="final">Yuliana Gabriela,<br>mi universo eres tú 💫</div>
+
+<script>
+const video=document.getElementById("video");
+const fraseDiv=document.getElementById("frase");
+const finalMensaje=document.getElementById("final");
+
+/* FRASES */
+const frases=[
+"Eres mi casualidad más bonita ✨",
+"Contigo el universo tiene sentido 💫",
+"Tu sonrisa ilumina mi galaxia 🌌",
+"Si el amor tuviera nombre, sería el tuyo 💖",
+"Te elegiría en todas las vidas 💍",
+"Eres mi estrella favorita ⭐",
+"Mi lugar favorito siempre será a tu lado 🌹"
+];
+
+let indice=0;
+let intervaloFrases;
+
+/* INICIAR */
+function iniciar(){
+video.play();
+video.muted=false;
+video.style.filter="blur(0px) brightness(60%)";
+document.getElementById("mensaje").style.display="block";
+rotarFrases();
+
+setTimeout(formarCorazon,30000); // Después de 30s forma corazón
+}
+
+/* ROTAR FRASES */
+function rotarFrases(){
+intervaloFrases=setInterval(()=>{
+fraseDiv.style.opacity=0;
+setTimeout(()=>{
+fraseDiv.innerHTML=frases[indice];
+fraseDiv.style.opacity=1;
+indice=(indice+1)%frases.length;
+},800);
+},4000);
+}
+
+/* GALAXIA */
+const canvas=document.getElementById("galaxia");
+const ctx=canvas.getContext("2d");
+canvas.width=window.innerWidth;
+canvas.height=window.innerHeight;
+
+let estrellas=[];
+
+for(let i=0;i<300;i++){
+estrellas.push({
+x:Math.random()*canvas.width,
+y:Math.random()*canvas.height,
+r:Math.random()*1.5,
+alpha:Math.random()
+});
+}
+
+function animar(){
+ctx.clearRect(0,0,canvas.width,canvas.height);
+estrellas.forEach(e=>{
+ctx.beginPath();
+ctx.arc(e.x,e.y,e.r,0,Math.PI*2);
+ctx.fillStyle="rgba(255,255,255,"+e.alpha+")";
+ctx.shadowBlur=10;
+ctx.shadowColor="white";
+ctx.fill();
+});
+requestAnimationFrame(animar);
+}
+animar();
+
+/* FORMAR CORAZÓN */
+function formarCorazon(){
+clearInterval(intervaloFrases);
+fraseDiv.style.opacity=0;
+
+let centerX=canvas.width/2;
+let centerY=canvas.height/2;
+
+estrellas=[];
+for(let t=0;t<Math.PI*2;t+=0.05){
+let x=16*Math.pow(Math.sin(t),3);
+let y=-(13*Math.cos(t)-5*Math.cos(2*t)-2*Math.cos(3*t)-Math.cos(4*t));
+estrellas.push({
+x:centerX+x*15,
+y:centerY+y*15,
+r:2,
+alpha:1
+});
+}
+
+setTimeout(explosion,3000);
+}
+
+/* EXPLOSION Y MENSAJE FINAL */
+function explosion(){
+finalMensaje.style.opacity=1;
+}
+</script>
+
+</body>
+</html>
